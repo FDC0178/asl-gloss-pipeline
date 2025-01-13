@@ -4,11 +4,14 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import pickle
-from src.preprocess import preprocess_dataset
+import pandas as pd
+from src.preprocess import preprocess_text
 
 def train_model(dataset_csv, output_model):
-    data = preprocess_dataset(dataset_csv)
-    X_train, X_test, y_train, y_test = train_test_split(data['processed_sentence'], data['asl_gloss'], test_size=0.2, random_state=42)
+    df = pd.read_csv(dataset_csv)
+    df['processed_sentence'] = df['sentence'].apply(preprocess_text)
+    X_train, X_test, y_train, y_test = train_test_split(df['processed_sentence'], df['asl_gloss'], test_size=0.2, random_state=42)
+    
     vectorizer = CountVectorizer()
     X_train_vect = vectorizer.fit_transform(X_train)
     X_test_vect = vectorizer.transform(X_test)

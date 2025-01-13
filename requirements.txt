@@ -1,4 +1,7 @@
 pandas
 spacy
 scikit-learn
+sentence-transformers
+openpyxl
 pickle-mixin
+flask
